@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC Virtual - Mr Ph</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    background: #111827;
+    color: white;
+}
+
+/* DESKTOP */
+
+.desktop {
+    width: 100%;
+    height: calc(100vh - 55px);
+    position: relative;
+    background:
+        radial-gradient(circle at 30% 30%, #2563eb55, transparent 35%),
+        radial-gradient(circle at 80% 70%, #7c3aed55, transparent 35%),
+        linear-gradient(135deg, #020617, #111827);
+}
+
+/* ÍCONES */
+
+.desktop-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px;
+    width: 110px;
+}
+
+.icon {
+    width: 80px;
+    text-align: center;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.icon:hover {
+    background: #ffffff22;
+}
+
+.icon span {
+    display: block;
+    font-size: 38px;
+    margin-bottom: 5px;
+}
+
+.icon p {
+    font-size: 13px;
+}
+
+/* BARRA */
+
+.taskbar {
+    height: 55px;
+    background: #020617e8;
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 12px;
+    position: relative;
+    z-index: 1000;
+}
+
+.start-btn {
+    border: none;
+    background: #2563eb;
+    color: white;
+    width: 45px;
+    height: 40px;
+    border-radius: 9px;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.start-btn:hover {
+    background: #3b82f6;
+}
+
+.task-icon {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.task-icon:hover {
+    background: #ffffff18;
+}
+
+.clock {
+    margin-left: auto;
+    font-size: 13px;
+    text-align: right;
+}
+
+/* MENU INICIAR */
+
+.start-menu {
+    position: absolute;
+    bottom: 65px;
+    left: 12px;
+    width: 340px;
+    padding: 20px;
+    background: #0f172add;
+    backdrop-filter: blur(25px);
+    border: 1px solid #ffffff18;
+    border-radius: 15px;
+    display: none;
+    z-index: 2000;
+    box-shadow: 0 15px 50px #0008;
+}
+
+.start-menu.active {
+    display: block;
+}
+
+.start-menu h2 {
+    margin-bottom: 18px;
+}
+
+.search {
+    width: 100%;
+    padding: 11px;
+    border-radius: 8px;
+    border: none;
+    background: #1e293b;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.apps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.app {
+    padding: 15px 5px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.app:hover {
+    background: #ffffff15;
+}
+
+.app div {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.app small {
+    font-size: 11px;
+}
+
+/* JANELAS */
+
+.window {
+    position: absolute;
+    top: 8%;
+    left: 18%;
+    width: 650px;
+    max-width: 90%;
+    height: 500px;
+    max-height: 80%;
+    background: #0f172af2;
+    backdrop-filter: blur(20px);
+    border: 1px solid #ffffff20;
+    border-radius: 12px;
+    box-shadow: 0 20px 70px #0009;
+    display: none;
+    z-index: 500;
+    overflow: hidden;
+}
+
+.window.active {
+    display: block;
+}
+
+.window-header {
+    height: 45px;
+    background: #020617cc;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    cursor: move;
+}
+
+.window-title {
+    flex: 1;
+}
+
+.window-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.window-buttons button {
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.min {
+    background: #eab308;
+}
+
+.close {
+    background: #ef4444;
+}
+
+.window-content {
+    height: calc(100% - 45px);
+    padding: 20px;
+    overflow: auto;
+}
+
+/* MEU PC */
+
+.pc-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.hardware {
+    background: #1e293b;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid #ffffff10;
+}
+
+.hardware h3 {
+    margin-bottom: 8px;
+}
+
+.hardware p {
+    color: #cbd5e1;
+}
+
+/* TERMINAL */
+
+.terminal {
+    background: #020617;
+    height: 100%;
+    padding: 15px;
+    font-family: monospace;
+    color: #22c55e;
+    overflow: auto;
+}
+
+.terminal-input {
+    display: flex;
+    margin-top: 10px;
+}
+
+.terminal-input span {
+    margin-right: 8px;
+}
+
+.terminal-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #22c55e;
+    font-family: monospace;
+}
+
+/* NAVEGADOR */
+
+.browser-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.browser-bar input {
+    flex: 1;
+    padding: 10px;
+    background: #1e293b;
+    border: none;
+    color: white;
+    border-radius: 7px;
+}
+
+.browser-bar button {
+    padding: 10px 15px;
+    background: #2563eb;
+    border: none;
+    color: white;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.browser-page {
+    background: white;
+    color: #111827;
+    height: 350px;
+    border-radius: 8px;
+    padding: 30px;
+}
+
+.browser-page h1 {
+    margin-bottom: 15px;
+}
+
+/* CONFIGURAÇÕES */
+
+.setting {
+    background: #1e293b;
+    padding: 17px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.setting button {
+    float: right;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:700px) {
+
+    .window {
+        left: 5%;
+        width: 90%;
+        top: 5%;
+    }
+
+    .pc-info {
+        grid-template-columns: 1fr;
+    }
+
+    .start-menu {
+        width: 90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- DESKTOP -->
+
+<div class="desktop">
+
+    <div class="desktop-icons">
+
+        <div class="icon" onclick="openWindow('pcWindow')">
+            <span>💻</span>
+            <p>Meu PC</p>
+        </div>
+
+        <div class="icon" onclick="openWindow('browserWindow')">
+            <span>🌐</span>
+            <p>Navegador</p>
+        </div>
+
+        <div class="icon" onclick="openWindow('terminalWindow')">
+            <span>⌨️</span>
+            <p>Terminal</p>
+        </div>
+
+        <div class="icon" onclick="openWindow('settingsWindow')">
+            <span>⚙️</span>
+            <p>Configurações</p>
+        </div>
+
+    </div>
+
+
+    <!-- MENU INICIAR -->
+
+    <div class="start-menu" id="startMenu">
+
+        <h2>PC Virtual</h2>
+
+        <input
+            class="search"
+            placeholder="Pesquisar aplicativos..."
+            onkeyup="searchApps(this.value)"
+        >
+
+        <div class="apps">
+
+            <div class="app" onclick="openWindow('pcWindow')">
+                <div>💻</div>
+                <small>Meu PC</small>
+            </div>
+
+            <div class="app" onclick="openWindow('browserWindow')">
+                <div>🌐</div>
+                <small>Navegador</small>
+            </div>
+
+            <div class="app" onclick="openWindow('terminalWindow')">
+                <div>⌨️</div>
+                <small>Terminal</small>
+            </div>
+
+            <div class="app" onclick="openWindow('settingsWindow')">
+                <div>⚙️</div>
+                <small>Configurações</small>
+            </div>
+
+            <div class="app" onclick="openWindow('buildWindow')">
+                <div>🖥️</div>
+                <small>Build</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JANELA MEU PC -->
+
+    <div class="window" id="pcWindow">
+
+        <div class="window-header">
+
+            <div class="window-title">
+                💻 Meu PC
+            </div>
+
+            <div class="window-buttons">
+                <button class="min" onclick="closeWindow('pcWindow')">−</button>
+                <button class="close" onclick="closeWindow('pcWindow')">×</button>
+            </div>
+
+        </div>
+
+        <div class="window-content">
+
+            <h2>Informações do computador</h2>
+
+            <br>
+
+            <div class="pc-info">
+
+                <div class="hardware">
+                    <h3>🧠 Processador</h3>
+                    <p>AMD Ryzen 5 5600</p>
+                    <p>6 núcleos / 12 threads</p>
+                </div>
+
+                <div class="hardware">
+                    <h3>🎮 Placa de vídeo</h3>
+                    <p>RTX 4060</p>
+                    <p>8 GB VRAM</p>
+                </div>
+
+                <div class="hardware">
+                    <h3>⚡ Memória RAM</h3>
+                    <p>16 GB DDR4</p>
+                    <p>3200 MHz</p>
+                </div>
+
+                <div class="hardware">
+                    <h3>💾 Armazenamento</h3>
+                    <p>SSD NVMe 1 TB</p>
+                </div>
+
+                <div class="hardware">
+                    <h3>🔌 Fonte</h3>
+                    <p>650 W 80 Plus</p>
+                </div>
+
+                <div class="hardware">
+                    <h3>🖥️ Sistema</h3>
+                    <p>PC Virtual OS</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVEGADOR -->
+
+    <div class="window" id="browserWindow">
+
+        <div class="window-header">
+
+            <div class="window-title">
+                🌐 Navegador
+            </div>
+
+            <div class="window-buttons">
+                <button class="min" onclick="closeWindow('browserWindow')">−</button>
+                <button class="close" onclick="closeWindow('browserWindow')">×</button>
+            </div>
+
+        </div>
+
+        <div class="window-content">
+
+            <div class="browser-bar">
+
+                <input
+                    id="urlInput"
+                    placeholder="Digite uma pesquisa..."
+                >
+
+                <button onclick="searchWeb()">
+                    Pesquisar
+                </button>
+
+            </div>
+
+            <div class="browser-page" id="browserPage">
+
+                <h1>Bem-vindo ao navegador</h1>
+
+                <p>
+                    Este é um navegador simulado dentro do seu PC Virtual.
+                </p>
+
+                <br>
+
+                <p>
+                    Digite alguma coisa na barra acima para simular uma pesquisa.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TERMINAL -->
+
+    <div class="window" id="terminalWindow">
+
+        <div class="window-header">
+
+            <div class="window-title">
+                ⌨️ Terminal
+            </div>
+
+            <div class="window-buttons">
+                <button class="min" onclick="closeWindow('terminalWindow')">−</button>
+                <button class="close" onclick="closeWindow('terminalWindow')">×</button>
+            </div>
+
+        </div>
+
+        <div class="window-content" style="padding:0">
+
+            <div class="terminal" id="terminal">
+
+                <div>
+                    PC Virtual Terminal v1.0
+                </div>
+
+                <div>
+                    Digite "help" para ver os comandos.
+                </div>
+
+                <br>
+
+                <div class="terminal-input">
+
+                    <span>PC&gt;</span>
+
+                    <input
+                        id="terminalInput"
+                        autocomplete="off"
+                        onkeydown="terminalCommand(event)"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONFIGURAÇÕES -->
+
+    <div class="window" id="settingsWindow">
+
+        <div class="window-header">
+
+            <div class="window-title">
+                ⚙️ Configurações
+            </div>
+
+            <div class="window-buttons">
+                <button class="min" onclick="closeWindow('settingsWindow')">−</button>
+                <button class="close" onclick="closeWindow('settingsWindow')">×</button>
+            </div>
+
+        </div>
+
+        <div class="window-content">
+
+            <h2>Configurações</h2>
+
+            <br>
+
+            <div class="setting">
+                🌙 Tema escuro
+                <button onclick="toggleTheme()">Alterar</button>
+            </div>
+
+            <div class="setting">
+                🔊 Som
+                <button onclick="alert('Som alterado!')">Alterar</button>
+            </div>
+
+            <div class="setting">
+                📡 Internet
+                <button onclick="alert('Internet conectada!')">
+                    Testar
+                </button>
+            </div>
+
+            <div class="setting">
+                🔄 Sistema
+                <button onclick="alert('Sistema atualizado!')">
+                    Atualizar
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUILD -->
+
+    <div class="window" id="buildWindow">
+
+        <div class="window-header">
+
+            <div class="window-title">
+                🖥️ Build do PC
+            </div>
+
+            <div class="window-buttons">
+                <button class="min" onclick="closeWindow('buildWindow')">−</button>
+                <button class="close" onclick="closeWindow('buildWindow')">×</button>
+            </div>
+
+        </div>
+
+        <div class="window-content">
+
+            <h2>Build Gamer</h2>
+
+            <br>
+
+            <div class="hardware">
+                <h3>CPU</h3>
+                <p>AMD Ryzen 5 5600</p>
+            </div>
+
+            <br>
+
+            <div class="hardware">
+                <h3>GPU</h3>
+                <p>NVIDIA RTX 4060 8 GB</p>
+            </div>
+
+            <br>
+
+            <div class="hardware">
+                <h3>RAM</h3>
+                <p>16 GB DDR4 3200 MHz</p>
+            </div>
+
+            <br>
+
+            <div class="hardware">
+                <h3>SSD</h3>
+                <p>NVMe 1 TB</p>
+            </div>
+
+            <br>
+
+            <div class="hardware">
+                <h3>Fonte</h3>
+                <p>650 W 80 Plus</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TASKBAR -->
+
+<div class="taskbar">
+
+    <button class="start-btn" onclick="toggleStart()">
+        ⊞
+    </button>
+
+    <button
+        class="task-icon"
+        onclick="openWindow('browserWindow')">
+        🌐
+    </button>
+
+    <button
+        class="task-icon"
+        onclick="openWindow('terminalWindow')">
+        ⌨️
+    </button>
+
+    <button
+        class="task-icon"
+        onclick="openWindow('settingsWindow')">
+        ⚙️
+    </button>
+
+    <div class="clock" id="clock">
+        00:00
+    </div>
+
+</div>
+
+
+<script>
+
+/* RELÓGIO */
+
+function updateClock() {
+
+    const now = new Date();
+
+    const time =
+        now.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+    const date =
+        now.toLocaleDateString("pt-BR");
+
+    document.getElementById("clock").innerHTML =
+        time + "<br>" + date;
+}
+
+setInterval(updateClock, 1000);
+
+updateClock();
+
+
+/* MENU */
+
+function toggleStart() {
+
+    const menu = document.getElementById("startMenu");
+
+    menu.classList.toggle("active");
+}
+
+
+/* ABRIR JANELA */
+
+function openWindow(id) {
+
+    document.getElementById(id).classList.add("active");
+
+    document.getElementById("startMenu")
+        .classList.remove("active");
+}
+
+
+/* FECHAR JANELA */
+
+function closeWindow(id) {
+
+    document.getElementById(id).classList.remove("active");
+}
+
+
+/* PESQUISA */
+
+function searchWeb() {
+
+    const query =
+        document.getElementById("urlInput").value;
+
+    if (query.trim() === "") {
+        return;
+    }
+
+    document.getElementById("browserPage").innerHTML = `
+
+        <h1>🔎 Resultado da pesquisa</h1>
+
+        <br>
+
+        <p>
+            Você pesquisou por:
+        </p>
+
+        <h2>${query}</h2>
+
+        <br>
+
+        <p>
+            Esta é uma pesquisa simulada do PC Virtual.
+        </p>
+
+    `;
+}
+
+
+/* TERMINAL */
+
+function terminalCommand(event) {
+
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const input =
+        document.getElementById("terminalInput");
+
+    const command =
+        input.value.toLowerCase().trim();
+
+    const terminal =
+        document.getElementById("terminal");
+
+    let result = "";
+
+    if (command === "help") {
+
+        result = `
+            Comandos disponíveis:<br>
+            help - mostra os comandos<br>
+            clear - limpa o terminal<br>
+            about - informações do PC<br>
+            build - mostra a build<br>
+            time - mostra o horário
+        `;
+
+    } else if (command === "about") {
+
+        result = `
+            PC Virtual<br>
+            CPU: Ryzen 5 5600<br>
+            RAM: 16 GB<br>
+            GPU: RTX 4060
+        `;
+
+    } else if (command === "build") {
+
+        result = `
+            Build Gamer:<br>
+            Ryzen 5 5600<br>
+            RTX 4060<br>
+            16 GB RAM<br>
+            SSD NVMe 1 TB<br>
+            Fonte 650 W
+        `;
+
+    } else if (command === "time") {
+
+        result =
+            new Date().toLocaleTimeString("pt-BR");
+
+    } else if (command === "clear") {
+
+        terminal.innerHTML = `
+            <div class="terminal-input">
+                <span>PC&gt;</span>
+                <input
+                    id="terminalInput"
+                    autocomplete="off"
+                    onkeydown="terminalCommand(event)"
+                >
+            </div>
+        `;
+
+        document.getElementById("terminalInput").focus();
+
+        return;
+
+    } else if (command === "") {
+
+        result = "";
+
+    } else {
+
+        result =
+            `Comando não encontrado: ${command}`;
+    }
+
+    const line =
+        document.createElement("div");
+
+    line.innerHTML =
+        `<br>PC&gt; ${command}<br>${result}`;
+
+    terminal.insertBefore(
+        line,
+        terminal.querySelector(".terminal-input")
+    );
+
+    input.value = "";
+}
+
+
+/* TEMA */
+
+function toggleTheme() {
+
+    const body =
+        document.body;
+
+    if (body.style.filter === "invert(1)") {
+
+        body.style.filter = "none";
+
+    } else {
+
+        body.style.filter = "invert(1)";
+
+    }
+}
+
+
+/* PESQUISA DOS APLICATIVOS */
+
+function searchApps(value) {
+
+    const apps =
+        document.querySelectorAll(".app");
+
+    apps.forEach(app => {
+
+        const text =
+            app.innerText.toLowerCase();
+
+        if (text.includes(value.toLowerCase())) {
+
+            app.style.display = "block";
+
+        } else {
+
+            app.style.display = "none";
+
+        }
+
+    });
+}
+
+</script>
+
+</body>
+</html>
